@@ -8,7 +8,6 @@
 
 #include <vector>
 #include <iostream>
-// #include <chrono>
 
 void PrintVector(std::vector<int>& values)
 {
@@ -20,20 +19,49 @@ void PrintVector(std::vector<int>& values)
     }
 }
 
+/*
+** Manipulation related
+*/
+void Swap(std::vector<int>& values, const int& n1, const int& n2)
+{
+    int nTmp = values[n1];
+    values[n1] = values[n2];
+    values[n2] = nTmp;
+}
+
+int Partition(std::vector<int>& values, const int& nStart, const int& nEnd)
+{
+    int x = values[nStart];
+    int i = nStart;
+
+    for (int j = nStart + 1; j < nEnd; j++)
+    {
+        if (values[j] <= x)
+        {
+            i += 1;
+            Swap(values, i, j);
+        }
+    }
+    Swap(values, i, nStart);
+    return i;
+}
+
+void QuickSort(std::vector<int>& values, const int& nStart, const int& nEnd)
+{
+    if (nStart < nEnd)
+    {
+        int q = Partition(values, nStart, nEnd);
+         QuickSort(values, nStart, q);
+         QuickSort(values, q + 1, nEnd);
+    }
+}
 
 int main(int argc, const char * argv[]) {
-    // std::chrono::time_point<std::chrono::system_clock> start, end;
-    // std::vector<int> values = {10, 0, 2, 5, -4, 3, 2, 10, 0, 2, 5, -4, 3, 2, 10, 0, 2, 5, -4, 3, 2, 10, 0, 2, 5, -4, 3, 2, 10, 0, 2, 5, -4, 3, 2, 10, 0, 2, 5, -4, 3, 2, 10, 0, 2, 5, -4, 3, 2, 10, 0, 2, 5, -4, 3, 2, 10, 0, 2, 5, -4, 3, 2, 10, 0, 2, 5, -4, 3, 2, 10, 0, 2, 5, -4, 3, 2, 10, 0, 2, 5, -4, 3, 2, 10, 0, 2, 5, -4, 3, 2, 10, 0, 2, 5, -4, 3, 2, 10, 0, 2, 5, -4, 3, 2, 10, 0, 2, 5, -4, 3, 2, 10, 0, 2, 5, -4, 3, 2, 10, 0, 2, 5, -4, 3, 2, 10, 0, 2, 5, -4, 3, 2, 10, 0, 2, 5, -4, 3, 2, 10, 0, 2, 5, -4, 3, 2, 10, 0, 2, 5, -4, 3, 2, 10, 0, 2, 5, -4, 3, 2, 10, 0, 2, 5, -4, 3, 2, 10, 0, 2, 5, -4, 3, 2, 10, 0, 2, 5, -4, 3, 2, 10, 0, 2, 5, -4, 3, 2, 10, 0, 2, 5, -4, 3, 2, 10, 0, 2, 5, -4, 3, 2, 10, 0, 2, 5, -4, 3, 2, 10, 0, 2, 5, -4, 3, 2, 10, 0, 2, 5, -4, 3, 2, 10, 0, 2, 5, -4, 3, 2, 10, 0, 2, 5, -4, 3, 2, 10, 0, 2, 5, -4, 3, 2};
-    std::vector<int> values = {10, 0, 2, 5, -4, 3, 2};
+    std::vector<int> values = {10, 0, 2, 5, -4, 2, 4};
 
     std::cout << "Unsorted collection:" << std::endl;
     PrintVector(values);
-    // start = std::chrono::system_clock::now();
-    // 
-    QuickSort(values);
-    // end = std::chrono::system_clock::now();
-    // std::chrono::duration<double> elapsed_seconds = end-start;
-    // std::cout << "Sort duration: " << elapsed_seconds.count() << "s\n";
+    QuickSort(values, 0, values.size());
     std::cout << "Sorted collection:" << std::endl;
     PrintVector(values);
     return 0;
